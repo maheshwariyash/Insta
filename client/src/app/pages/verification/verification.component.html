@@ -1,0 +1,54 @@
+<div class="container-fluid w-100 h-100 d-flex justify-content-center align-items-center"
+    style="background-color: #dc6f2eb8;">
+    <form [formGroup]="verificationForm">
+        <div class="row">
+            <div class="col-12 border border-5 border-dark shadow-lg bg-white" style="border-radius: 10px;">
+                <div class="col-12 mt-3 mb-5">
+                    <h4>Please Enter the details to start your Insta...</h4>
+                </div>
+                <div class="col-12 d-flex my-4">
+                    <div class="col-3 d-flex justify-content-center align-items-center">
+                        <label for="username" class="form-label">User Name</label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" formControlName="username" class="form-control" placeholder="User Name"
+                            required
+                            [ngClass]="{'invalid-input': isSubmitted && verificationForm.get('username')?.invalid}">
+                        <div *ngIf="isSubmitted && verificationForm.get('username')?.invalid" class="text-danger">
+                            Enter User Name
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex my-3">
+                    <div class="col-3 d-flex justify-content-center align-items-center">
+                        <label for="accountType" class="form-label">Account Type</label>
+                    </div>
+                    <div class="col-9">
+                        <select formControlName="accountType" class="w-100" (change)="onAccountTypeChange($event)"
+                            required>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 d-flex my-3">
+                    <div class="col-3 d-flex justify-content-center align-items-center">
+                        <label for="profilePic" class="form-label">Profile Pic</label>
+                    </div>
+                    <div class="col-9">
+                        <input type="file" formControlName="profilePic" class="form-control"
+                            (change)="onFileSelect($event)">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center my-3">
+                    <div *ngIf="imageSrc" class="border rounded-circle ms-3" style="width: 100px; height: 100px;">
+                        <img [src]="imageSrc" alt="yourPhoto" class="w-100 h-100 rounded-circle">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center mb-3">
+                    <button class="btn btn-primary" type="submit" (click)="onSubmit()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,26 @@
+a {
+  text-decoration: none;
+  color: #060c1c;
+}
+a:hover {
+  text-decoration: underline;
+}
+body {
+  background-color: #dc6f2eb8;
+}
+
+/* #freepik--Character--inject-95 {
+  animation: ch 0.2s ease infinite;
+} */
+
+@keyframes ch {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translatey(75px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

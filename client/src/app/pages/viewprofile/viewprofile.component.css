@@ -1,0 +1,7 @@
+.invalid-input {
+  border: 3px solid red;
+}
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}

@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="col-12 d-flex searchbar">
+        <input type="search" name="search" class="search form-control border-0 w-100" placeholder="search"
+            (input)="findPeople(search)" (blur)="onBlur()" [(ngModel)]="search" autocomplete="off">
+        <button type="button" class=" sbtn border-0" style="background: none; width: 70px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25px" fill="black">
+                <path
+                    d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+            </svg>
+        </button>
+        <div *ngIf="search.length > 0 && userlist.length == 0" class="searchlist p-3">
+            <h5>No User Found...</h5>
+        </div>
+        <div *ngIf="userlist.length" class="searchlist">
+            <div *ngFor="let user of userlist" class="container border p-2">
+                <div class="row">
+
+                    <a [routerLink]="['/home/viewprofile/',user._id]" style="text-decoration: none;">
+                        <div class="col-12 d-flex flex-row align-items-center justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="border rounded-circle me-1" style="width: 60px; height: 60px;"><img
+                                        class="w-100 h-100 rounded-circle" [src]="url+user?.profilePic"
+                                        alt="Profile Pic">
+                                </div>
+                                <div class="d-flex flex-column me-3">{{user.name}} <span>{{user.username}}</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div *ngFor="let post of feedpost" class="col-6 m-0 p-0 border border-3">
+            <a [routerLink]="['/home/spost',post.post[0]._id]">
+                <img [src]="url+post.post[0].image" alt="img" class="w-100">
+            </a>
+        </div>
+    </div>
+</div>
+<div *ngIf="!isEndOfData && isFetching" class="loading">
+    <div class="lines l1"></div>
+    <div class="lines l2"></div>
+    <div class="lines l3"></div>
+    <div class="lines l4"></div>
+    <div class="lines l5"></div>
+</div>

@@ -1,0 +1,136 @@
+<div class="container">
+    <div class="row">
+        <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+            <div *ngIf="user1?.profilePic" class="border rounded-circle ms-3" style="width: 100px; height: 100px;"><img
+                    class="w-100 h-100 rounded-circle" [src]="url+user1?.profilePic" alt="Profile Pic">
+            </div>
+            <div>{{user1.name}} </div>
+            <div>{{user1.username}}</div>
+        </div>
+        <div class="col-6 d-flex flex-row mt-3">
+            <div class="d-flex flex-column align-items-center me-5">{{user1.posts?.length}}<span>Posts</span></div>
+            <div class="d-flex flex-column align-items-center"
+                *ngIf="(user?._id == user1?._id) || (friend[0]?.isfriend == true || user1.accountType == 'public')"> <a
+                    [routerLink]="['/home/friendlist/', user1._id]" style="text-decoration: none;"
+                    class="d-flex flex-column align-items-center">{{noOfFriends.length}}
+                    <span>Friends</span></a></div>
+            <div class="d-flex flex-column align-items-center"
+                *ngIf="(user?._id != user1?._id) && ((friend.length == 0 || friend[0]?.isfriend == false) && user1?.accountType == 'private')">
+                {{noOfFriends.length}}
+                <span>Friends</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- own visited on view profile then edit button -->
+        <div *ngIf="user?._id == user1?._id" class="col-12 d-flex justify-content-center mt-3">
+            <button class="w-75 align-items-center btn-primary" data-bs-toggle="modal" href="#editmodal"> Edit
+                Profile</button>
+        </div>
+        <!-- visited on other user profile and friend request not send -->
+        <div *ngIf="user?._id != user1?._id && friend.length == 0" class="col-12 d-flex justify-content-center mt-3">
+            <button class="w-75 align-items-center btn-primary" (click)="onAddFriend()"> Add Friend</button>
+        </div>
+        <!-- visited on other user profile and friend request send -->
+        <div *ngIf="user?._id != user1?._id && friend[0]?.isfriend == false"
+            class="col-12 d-flex justify-content-center mt-3">
+            <button class="w-75 align-items-center btn-primary" disabled> Friend request Send</button>
+        </div>
+        <!-- visited on other user profile and is friend  -->
+        <div *ngIf="user?._id != user1?._id && friend[0]?.isfriend == true"
+            class="col-12 d-flex justify-content-evenly mt-3">
+            <button class="align-items-center btn-danger w-50 m-1" (click)="onUnfriend(user1._id)"> Unfriend </button>
+            <button class="align-items-center btn-primary w-50 m-1"
+                [routerLink]="['/home/chat/',user1?._id]">Message</button>
+        </div>
+    </div>
+    <div *ngIf="!((user?._id == user1?._id) || (friend[0]?.isfriend == true || user1?.accountType == 'public'))">
+        <h3 class="mt-4 d-flex align-items-center justify-content-center text-danger"> Account Is Private!!</h3>
+    </div>
+    <div *ngIf=" (user?._id==user1?._id) || (friend[0]?.isfriend==true || user1?.accountType=='public' )"
+        class=" row mt-4">
+
+        <div *ngFor="let post of postarr" class="col-6 p-0 m-0 border border-dark mt-1">
+            <a [routerLink]="['/home/spost',post?._id]">
+                <img [src]="url+post?.image" alt="img" class="w-100">
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Modal 1-->
+<div class="modal fade" id="editmodal" aria-hidden="true" aria-labelledby="editmodalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="bg-black">
+                    <h3 class="text-white pt-2">&nbsp;Edit Profile&nbsp;</h3>
+                </div>
+                <button type="button" id="myModal" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form [formGroup]="updateForm">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 d-flex flex-column align-items-center justify-content-center mb-3">
+                                <div class="border rounded-circle ms-3" style="width: 100px; height: 100px;"><img
+                                        class="w-100 h-100 rounded-circle" [src]="imageSrc" alt="Profile Pic">
+                                </div>
+                                <div class="mt-2"><label for="profilePic" style="cursor: pointer; color: blue;"><input
+                                            type="file" formControlName="profilePic" id="profilePic"
+                                            (change)="onFileSelect($event)" style="display: none;">Change
+                                        Profile
+                                        Pic</label>
+                                    <div>
+                                        <label for="remove">Remove Profile Pic</label>
+                                        <input type="checkbox" name="remove" id="remove" value="remove" class="mx-1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex flex-row my-2">
+                                <div class="col-3 d-flex justify-content-center">
+                                    <label for="name" class="form-label">Name:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" formControlName="name" class="form-control" required
+                                        [ngClass]="{'invalid-input': isSubmitted && updateForm.get('name')?.invalid}">
+                                    <div *ngIf="isSubmitted && updateForm.get('name')?.invalid" class="text-danger">
+                                        Enter Full Name
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex flex-row my-2">
+                                <div class="col-3 d-flex justify-content-center">
+                                    <label for="username" class="form-label">Username:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" formControlName="username" class="form-control" required
+                                        [ngClass]="{'invalid-input': isSubmitted && updateForm.get('username')?.invalid}">
+                                    <div *ngIf="isSubmitted && updateForm.get('username')?.invalid" class="text-danger">
+                                        Enter User Name
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex flex-row my-2">
+                                <div class="col-3 d-flex justify-content-center">
+                                    <label for="accountType" class="form-label">Account Type:</label>
+                                </div>
+                                <div class="col-9">
+                                    <select formControlName="accountType" class="form-select w-100">
+                                        <option value="private">Private</option>
+                                        <option value="public">Public</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center mt-2">
+                                <button class="btn btn-success mx-3" data-bs-dismiss="modal"
+                                    (click)="onUpdate()">Update</button>
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

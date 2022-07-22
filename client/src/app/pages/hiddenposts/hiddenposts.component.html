@@ -1,0 +1,9 @@
+<h1>Hidden Posts</h1>
+<div class="row m-0 p-0">
+    <div *ngIf="hiddenpost.length == 0"> No Hidden Posts...</div>
+    <div *ngFor="let post of hiddenpost" class="col-6 m-0 p-0 border border-3">
+        <a [routerLink]="['/home/spost',post.post[0]._id]">
+            <img [src]="url+post.post[0].image" alt="img" class="w-100">
+        </a>
+    </div>
+</div>

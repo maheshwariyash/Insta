@@ -1,0 +1,109 @@
+<div class="container border">
+    <div class="row">
+        <div class="col-12 d-flex flex-row justify-content-between m-0 p-0 my-2">
+            <!-- user Image -->
+            <div *ngIf="user1.profilePic" class="d-flex">
+                <div class="border rounded-circle" style="width: 50px; height: 50px;"><img
+                        class="w-100 h-100 rounded-circle" [src]="url+user1.profilePic" alt="Profile Pic">
+                </div>
+                <div class="ms-2 d-flex justify-content-center align-items-center"><a
+                        style="text-decoration: none; color: black;" [routerLink]="['/home/viewprofile/',user1._id]">
+                        {{user1?.username}}</a> </div>
+            </div>
+            <!-- dropdown -->
+            <div class="btn-group dropstart">
+                <svg class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                    aria-expanded="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="7px">
+                    <path
+                        d="M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z" />
+                </svg>
+                <ul *ngIf="user?._id != user1?._id" class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start"
+                    aria-labelledby="dropdownMenuButton1">
+                    <li *ngIf="isHidden"><a class="dropdown-item" (click)="unhidePost(post._id)">Unhide</a></li>
+                    <li *ngIf="!isHidden"><a class="dropdown-item" (click)="hidePost(post._id)">Hide</a></li>
+                    <li *ngIf="friend.length == 0"><a class="dropdown-item" (click)="onAddFriend()">Add Friend</a></li>
+                    <li *ngIf="friend[0]?.isfriend == false"><a class="dropdown-item" href="">Friend Request Sent</a>
+                    </li>
+                    <li *ngIf="friend[0]?.isfriend == true"><a class="dropdown-item" href=""
+                            (click)="onUnfriend(user1._id)">Unfriend</a></li>
+                    <li><a class="dropdown-item" [routerLink]="['/home/viewprofile/', user1?._id]">View Profile</a>
+                    </li>
+                </ul>
+                <ul *ngIf="user?._id == user1?._id" class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start"
+                    aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" (click)="onDeletePost()">Delete</a></li>
+                    <li><a class="dropdown-item" [routerLink]="['/home/viewprofile/', user1?._id]">View Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div *ngIf="post?.image" class="col-12 m-0 p-0">
+            <img [src]="url+post?.image" alt="img" class="w-100">
+        </div>
+        <div class="col-12 m-0 p-0 my-2">
+            <div class=" d-flex flex-row">
+                <!-- like -->
+                <div *ngIf="!isLiked" class="me-2">
+                    <svg [id]="post?._id" width="30" viewBox="0 0 24 24" fill="none" stroke="black"
+                        (click)="like(post?._id)" stroke-width="2" stroke-linecap="rounonModelClosed"
+                        stroke-linejoin="round" style="cursor: pointer;">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                    </svg>
+                </div>
+                <div *ngIf="isLiked" class="me-2">
+                    <svg [id]="post?._id" width="30" viewBox="0 0 24 24" fill="red" stroke="red"
+                        (click)="like(post?._id)" stroke-width="2" stroke-linecap="rounonModelClosed"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                    </svg>
+                </div>
+                <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px">
+                        <path
+                            d="M503.691 189.836L327.687 37.851C312.281 24.546 288 35.347 288 56.015v80.053C127.371 137.907 0 170.1 0 322.326c0 61.441 39.581 122.309 83.333 154.132 13.653 9.931 33.111-2.533 28.077-18.631C66.066 312.814 132.917 274.316 288 272.085V360c0 20.7 24.3 31.453 39.687 18.164l176.004-152c11.071-9.562 11.086-26.753 0-36.328z" />
+                    </svg></div>
+            </div>
+            <div><span [class]="post?._id">{{post?.likedBy?.length}}</span> Likes</div>
+            <div>caption:{{post?.caption}} </div>
+            <div class="text-muted">{{post?.createdAt | date1}} </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3 class="text-muted p-0">Comments</h3>
+        <div class="col-12 p-0">
+            <!-- input -->
+            <div class="my-3 d-flex">
+                <input (keypress)="$event.which == 13 ? postComment(post?._id) : true" type="text" name="comment"
+                    id="comment" placeholder="Add Comment" [(ngModel)]="comment" class="w-100 me-2">
+                <svg (click)="postComment(post?._id)" width="35px" height="35px" fill="blue"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path
+                        d="M446.7 98.6l-67.6 318.8c-5.1 22.5-18.4 28.1-37.3 17.5l-103-75.9-49.7 47.8c-5.5 5.5-10.1 10.1-20.7 10.1l7.4-104.9 190.9-172.5c8.3-7.4-1.8-11.5-12.9-4.1L117.8 284 16.2 252.2c-22.1-6.9-22.5-22.1 4.6-32.7L418.2 66.4c18.4-6.9 34.5 4.1 28.5 32.2z" />
+                </svg>
+            </div>
+            <div>
+                <div *ngIf="commentdata.length == 0" class="mt-2 ms-2">
+                    <h3> No Comments...</h3>
+                </div>
+                <div *ngFor="let commentdata of commentdata.reverse()" class="col-12 mt-2">
+                    <div *ngIf="commentdata.user[0].profilePic" class=" d-flex align-items-center">
+                        <div class="border rounded-circle mx-1" style="width: 60px; height: 60px;">
+                            <img class="w-100 h-100 rounded-circle" [src]="url+commentdata.user[0].profilePic"
+                                alt="Profile Pic">
+                        </div>
+                        <div>
+                            <h5 class="m-0"><a style="text-decoration: none;"
+                                    [routerLink]="['/home/viewprofile/',commentdata.user[0]._id]">{{commentdata.user[0].username}}</a>
+                            </h5>
+                            <small class="text-muted">{{commentdata.comments.timestamp | commentdate}} </small>
+                        </div>
+                    </div>
+                    <div class="ms-5">{{commentdata.comments.content}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

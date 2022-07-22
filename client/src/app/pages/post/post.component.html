@@ -1,0 +1,142 @@
+<div *ngFor="let data of data">
+    <div class="container border">
+        <div class="row">
+            <div class="col-12 d-flex flex-row justify-content-between m-0 p-0 my-2">
+                <!-- user Image -->
+                <div class="d-flex">
+                    <div class="border rounded-circle me-2" style="width: 50px; height: 50px;"><img
+                            class="w-100 h-100 rounded-circle" [src]="url+data.user.profilePic" alt="Profile Pic">
+                    </div>
+                    <div class="d-flex align-items-center"><a style="text-decoration: none; color: black;"
+                            [routerLink]="['/home/viewprofile/',data.user._id]">{{data.user.username}}</a></div>
+                </div>
+                <!-- dropdown  -->
+                <div class="btn-group dropstart">
+                    <svg class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" width="7px">
+                        <path
+                            d="M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z" />
+                    </svg>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" (click)="hidePost(data.post[0]?._id)">Hide</a></li>
+                        <li><a class="dropdown-item" (click)="onUnfriend(data.user._id)">Unfriend</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/home/viewprofile/',data.user?._id]">View
+                                Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 m-0 p-0">
+                <img [src]="url+data.post[0]?.image" alt="img" class="w-100">
+            </div>
+            <div class="col-12 m-0 p-0 my-2">
+                <div class=" d-flex flex-row">
+                    <!-- like -->
+                    <div *ngIf="!data.isLiked" class="me-2">
+                        <svg [id]="data.post[0]?._id" width="30" viewBox="0 0 24 24" fill="none" stroke="black"
+                            (click)="like(data.post[0]?._id)" stroke-width="2" stroke-linecap="rounonModelClosed"
+                            stroke-linejoin="round" style="cursor: pointer;">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div *ngIf="data.isLiked" class="me-2">
+                        <svg [id]="data.post[0]?._id" width="30" viewBox="0 0 24 24" fill="red" stroke="red"
+                            (click)="like(data.post[0]?._id)" stroke-width="2" stroke-linecap="rounonModelClosed"
+                            stroke-linejoin="round">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
+                        </svg>
+                    </div>
+                    <!-- comment -->
+                    <div class="me-2"><a (click)="onModalOpen('modal'+data.post[0]?._id,data.post[0]?._id)"
+                            data-bs-toggle="modal" [href]="'#modal'+data.post[0]?._id"><svg
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px">
+                                <path
+                                    d="M256 32C114.6 32 0 125.1 0 240c0 47.6 19.9 91.2 52.9 126.3C38 405.7 7 439.1 6.5 439.5c-6.6 7-8.4 17.2-4.6 26S14.4 480 24 480c61.5 0 110-25.7 139.1-46.3C192 442.8 223.2 448 256 448c141.4 0 256-93.1 256-208S397.4 32 256 32zm0 368c-26.7 0-53.1-4.1-78.4-12.1l-22.7-7.2-19.5 13.8c-14.3 10.1-33.9 21.4-57.5 29 7.3-12.1 14.4-25.7 19.9-40.2l10.6-28.1-20.6-21.8C69.7 314.1 48 282.2 48 240c0-88.2 93.3-160 208-160s208 71.8 208 160-93.3 160-208 160z" />
+                            </svg></a></div>
+                    <!-- share -->
+                    <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px">
+                            <path
+                                d="M503.691 189.836L327.687 37.851C312.281 24.546 288 35.347 288 56.015v80.053C127.371 137.907 0 170.1 0 322.326c0 61.441 39.581 122.309 83.333 154.132 13.653 9.931 33.111-2.533 28.077-18.631C66.066 312.814 132.917 274.316 288 272.085V360c0 20.7 24.3 31.453 39.687 18.164l176.004-152c11.071-9.562 11.086-26.753 0-36.328z" />
+                        </svg></div>
+                </div>
+                <div><span [class]="data.post[0]?._id">{{data.post[0]?.likedBy.length}}</span> Likes</div>
+                <div>caption:{{data.post[0]?.caption}} </div>
+                <div><a (click)="onModalOpen('modal'+data.post[0]?._id,data.post[0]?._id)" data-bs-toggle="modal"
+                        [href]="'#modal'+data.post[0]?._id">View all {{data.post[0]?.comments?.length}} comments</a>
+                </div>
+                <div class="text-muted">{{data.post[0]?.createdAt | date1}} </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" [id]="'modal'+data.post[0]?._id" aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="height: 700px;">
+                <div class="modal-header">
+                    <div class="bg-black">
+                        <h3 class="text-white pt-2">&nbsp;Comments&nbsp;</h3>
+                    </div>
+                    <button type="button" id="myModal" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6 my-auto">
+                                <img [src]="url+data.post[0]?.image" alt="image" class="w-100">
+                            </div>
+                            <!-- comment section -->
+                            <div class="col-6">
+                                <div class="border border-5" style="height: 500px; overflow-y:auto;">
+                                    <div *ngIf="commentdata.length == 0" class="mt-2 ms-2">
+                                        <h3> No Comments...</h3>
+                                    </div>
+                                    <div *ngFor="let commentdata of commentdata | chatsort" class="col-12 mt-2">
+                                        <div class=" d-flex align-items-center">
+                                            <div class="border rounded-circle mx-1" style="width: 60px; height: 60px;">
+                                                <img class="w-100 h-100 rounded-circle"
+                                                    [src]="url+commentdata.user[0].profilePic" alt="Profile Pic">
+                                            </div>
+                                            <div>
+                                                <h5 class="m-0">{{commentdata.user[0].username}}</h5>
+                                                <small class="text-muted"> {{commentdata.comments.timestamp |
+                                                    commentdate}}</small>
+                                            </div>
+                                        </div>
+                                        <div class="ms-5">{{commentdata.comments.content}}</div>
+                                    </div>
+                                </div>
+                                <!-- input -->
+                                <div class="mt-3 d-flex">
+                                    <input (keypress)="$event.which == 13 ? postComment(data.post[0]?._id) : true"
+                                        type="text" name="comment" id="comment" placeholder="Add Comment"
+                                        [(ngModel)]="comment" class="w-100 me-2">
+                                    <svg (click)="postComment(data.post[0]?._id)" width="35px" height="35px" fill="blue"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path
+                                            d="M446.7 98.6l-67.6 318.8c-5.1 22.5-18.4 28.1-37.3 17.5l-103-75.9-49.7 47.8c-5.5 5.5-10.1 10.1-20.7 10.1l7.4-104.9 190.9-172.5c8.3-7.4-1.8-11.5-12.9-4.1L117.8 284 16.2 252.2c-22.1-6.9-22.5-22.1 4.6-32.7L418.2 66.4c18.4-6.9 34.5 4.1 28.5 32.2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!isEndOfData && isFetching" class="loading">
+    <div class="lines l1"></div>
+    <div class="lines l2"></div>
+    <div class="lines l3"></div>
+    <div class="lines l4"></div>
+    <div class="lines l5"></div>
+</div>

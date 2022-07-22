@@ -1,0 +1,36 @@
+<h1>Friends List</h1>
+<div *ngIf="user1.length==0">
+    No Friends!! Make some new Friends
+</div>
+<!-- first div for loop -->
+<div *ngIf="user1.length>0">
+    <div *ngFor="let user1 of user1">
+        <div class="container border mt-3">
+            <div class="row">
+                <div class="col-12 d-flex flex-row align-items-center justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="border rounded-circle me-1" style="width: 75px; height: 75px;"><img
+                                class="w-100 h-100 rounded-circle" [src]="url+user1.profilePic" alt="Profile Pic">
+                        </div>
+                        <div><a class="d-flex flex-column me-3" style="text-decoration: none; color: black;"
+                                [routerLink]="['/home/viewprofile/',user1._id]">
+                                {{user1.name}} <span>{{user1.username}}</span></a></div>
+                    </div>
+                    <div *ngIf="user1.isfriend == 'friend'">
+                        <button class="me-3 btn btn-danger" (click)="onUnfriend(user1._id)">Unfriend</button>
+                    </div>
+                    <div *ngIf="user1.isfriend == 'sent'">
+                        <button class="me-3 btn btn-danger">Friend Req Sent</button>
+                    </div>
+                    <div *ngIf="!user1.isfriend && user1._id != user._id">
+                        <button class="me-3 btn btn-success"><a style="text-decoration: none; color: white;"
+                                [routerLink]="['/home/viewprofile/',user1._id]"> Add
+                                Friend</a></button>
+                    </div>
+                    <div *ngIf="user1._id == user._id">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

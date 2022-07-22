@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row main justify-content-center">
+        <div class="col-12 m-0 p-0 fixed-top">
+            <app-navbar></app-navbar>
+        </div>
+        <div class="col-2 border-end border-dark d-relative p-0">
+            <app-sidebar style="position: sticky; top:80px;"></app-sidebar>
+        </div>
+        <div class="col-6 post">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="col-3 border-dark border-start">
+            <app-chatlist></app-chatlist>
+        </div>
+        <!-- <div class="col-1 border-end border-dark d-relative p-0">
+            <app-sidebar style="position: sticky; top:80px;"></app-sidebar>
+        </div>
+        <div class="col-6 post">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="col-2 border-dark border-start">
+            <app-chat></app-chat>
+        </div> -->
+    </div>
+</div>

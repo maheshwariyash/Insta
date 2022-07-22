@@ -1,0 +1,8 @@
+.search:focus {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.search {
+  background: none;
+}
