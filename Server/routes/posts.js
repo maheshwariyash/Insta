@@ -142,6 +142,9 @@ router.get("/home", auth, async (req, res) => {
       },
     },
     {
+      $sort: { "post.createdAt": -1 },
+    },
+    {
       $skip: currentPage * 10,
     },
     {
@@ -180,6 +183,9 @@ router.get("/likedpost", auth, async (req, res) => {
           post: 1,
         },
       },
+      {
+        $sort: { "post.createdAt": -1 },
+      },
     ]).exec((error, result) => {
       if (error) console.log(error);
       res.send(result);
@@ -210,6 +216,9 @@ router.get("/hiddenpost", auth, async (req, res) => {
         $project: {
           post: 1,
         },
+      },
+      {
+        $sort: { "post.createdAt": -1 },
       },
     ]).exec((error, result) => {
       if (error) console.log(error);
