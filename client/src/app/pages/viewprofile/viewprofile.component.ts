@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { PostService } from 'src/app/services/post.service';
   templateUrl: './viewprofile.component.html',
   styleUrls: ['./viewprofile.component.css'],
 })
-export class ViewprofileComponent implements OnInit {
+export class ViewprofileComponent implements OnInit, DoCheck {
   friend: any = [];
   noOfFriends: any = [];
   id: any;
@@ -22,6 +22,7 @@ export class ViewprofileComponent implements OnInit {
   url = 'http://localhost:8000/';
   imageSrc: any = '';
   postarr: any = [];
+  isValid = false;
 
   constructor(
     private fb: FormBuilder,
@@ -48,12 +49,6 @@ export class ViewprofileComponent implements OnInit {
         // this.userservice.getUserById(this.id).subscribe((user: any) => {
         console.log('user1', this.user1);
 
-        this.updateForm.get('name')?.setValue(this.user1?.name);
-        this.updateForm.get('username')?.setValue(this.user1?.username);
-        this.updateForm.get('accountType')?.setValue(this.user1?.accountType);
-        this.imageSrc = `${this.url}${this.user1?.profilePic}`;
-        console.log(this.imageSrc);
-
         // is friend or not
         this.friend = this.user1.friends.filter((friend: any) => {
           if (friend.fid == this.user?._id) {
@@ -77,6 +72,22 @@ export class ViewprofileComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngDoCheck() {
+    if (this.updateForm.invalid) {
+      this.isValid = false;
+    }
+    if (this.updateForm.valid) {
+      this.isValid = true;
+    }
+  }
+
+  onModalOpen() {
+    this.updateForm.get('name')?.setValue(this.user1?.name);
+    this.updateForm.get('username')?.setValue(this.user1?.username);
+    this.updateForm.get('accountType')?.setValue(this.user1?.accountType);
+    this.imageSrc = `${this.url}${this.user1?.profilePic}`;
+  }
 
   updateForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -150,27 +161,32 @@ export class ViewprofileComponent implements OnInit {
           console.log(data.message);
           console.log(data.user);
 
-          this.userservice.user.next(data.user);
           // window.location.reload();
           this.user1 = data.user;
           this.imageSrc = `${this.url}${this.user1?.profilePic}`;
           this.profilePic = null;
           console.log(this.user1);
           y.checked = false;
+          this.userservice.user.next(data.user);
         }
       });
+      // const myModal = document.getElementById('editmodal');
+      // const onModelCloseListner = () => {
+      //   myModal?.removeEventListener('hidden.bs.modal', onModelCloseListner);
+      // };
+      // myModal?.addEventListener('hidden.bs.modal', onModelCloseListner);
     } else {
-      for (const key of Object.keys(this.updateForm.controls)) {
-        if (this.updateForm.controls[key].invalid) {
-          const invalidControl = this.el.nativeElement.querySelector(
-            '[formcontrolname="' + key + '"]'
-          );
-          // invalidControl.scrollIntoView();
-          invalidControl.focus();
-          window.scrollTo(0, 0);
-          break;
-        }
-      }
+      // for (const key of Object.keys(this.updateForm.controls)) {
+      //   if (this.updateForm.controls[key].invalid) {
+      //     const invalidControl = this.el.nativeElement.querySelector(
+      //       '[formcontrolname="' + key + '"]'
+      //     );
+      //     // invalidControl.scrollIntoView();
+      //     invalidControl.focus();
+      //     window.scrollTo(0, 0);
+      //     break;
+      //   }
+      // }
       console.log('error occured!!');
     }
   }

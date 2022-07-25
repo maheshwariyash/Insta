@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { VerificationGuard } from './guards/verification.guard';
 import { AddpostComponent } from './pages/addpost/addpost.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { FeedComponent } from './pages/feed/feed.component';
@@ -32,6 +34,7 @@ const routes: Routes = [
   {
     path: 'verification',
     component: VerificationComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'home',
@@ -40,42 +43,52 @@ const routes: Routes = [
       {
         path: '',
         component: PostComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'feed',
         component: FeedComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'viewprofile/:id',
         component: ViewprofileComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'addpost',
         component: AddpostComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'friendrequest',
         component: FriendrequestComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'likedpost',
         component: LikedpostsComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'hiddenpost',
         component: HiddenpostsComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'friendlist/:id',
         component: FriendslistComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'spost/:id',
         component: SinglepostComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
       {
         path: 'chat/:id',
         component: ChatComponent,
+        canActivate: [AuthGuard, VerificationGuard],
       },
     ],
   },

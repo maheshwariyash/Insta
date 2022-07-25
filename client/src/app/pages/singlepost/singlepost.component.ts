@@ -71,7 +71,6 @@ export class SinglepostComponent implements OnInit, OnDestroy {
           return false;
         });
         this.loader.hide();
-        console.log('unloasing');
       });
       this.postservice.getcomments(this.id).subscribe((data: any) => {
         console.log(data);

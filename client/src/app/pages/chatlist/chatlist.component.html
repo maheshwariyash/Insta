@@ -1,6 +1,10 @@
 <div class="chat">
-    <div> Recent Chats </div>
-    <div class="row w-100 m-0 p-0 mt-2">
+    <div class="position-fixed">
+        <h3>
+            Recent Chats
+        </h3>
+    </div>
+    <div class="row w-100 m-0 p-0 mt-5">
         <div class="col-12  border px-1 py-1 m-0" *ngFor="let chat of recentchats | chatsort">
             <a class="d-flex flex-row align-items-center justify-content-between"
                 style="text-decoration: none; color: black;" [routerLink]="['/home/chat/',chat.user._id]">

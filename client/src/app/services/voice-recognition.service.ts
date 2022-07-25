@@ -1,7 +1,3 @@
-// interface Iwindow extends Window {
-//   webkitSpeechRecognition:any
-// }
-
 const { webkitSpeechRecognition } = window as any;
 
 import { Injectable } from '@angular/core';

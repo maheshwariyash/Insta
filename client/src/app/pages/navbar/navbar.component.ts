@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from 'src/app/services/login.service';
-import { VoiceRecognitionService } from 'src/app/services/voice-recognition.service';
+// import { VoiceRecognitionService } from 'src/app/services/voice-recognition.service';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,12 +16,12 @@ export class NavbarComponent implements OnInit {
   faMicrophone = faMicrophone;
   faMicrophoneSlash = faMicrophoneSlash;
 
-  isRunning = false;
+  // isRunning = false;
 
   constructor(
     private userservice: LoginService,
     private _snackBar: MatSnackBar,
-    private voicerecognition: VoiceRecognitionService,
+    // private voicerecognition: VoiceRecognitionService,
     private ref: ChangeDetectorRef
   ) {
     this.userservice.user.subscribe((user) => {
@@ -30,17 +30,17 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.voicerecognition.isRunning.subscribe((data) => {
-      this.isRunning = data;
-      this.ref.detectChanges();
-    });
+    // this.voicerecognition.isRunning.subscribe((data) => {
+    //   this.isRunning = data;
+    //   this.ref.detectChanges();
+    // });
   }
 
-  toggleVoiceReco() {
-    this.isRunning
-      ? this.voicerecognition.abort()
-      : this.voicerecognition.start();
-  }
+  // toggleVoiceReco() {
+  //   this.isRunning
+  //     ? this.voicerecognition.abort()
+  //     : this.voicerecognition.start();
+  // }
 
   onLogout() {
     this.userservice.logout().subscribe((data: any) => {

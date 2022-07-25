@@ -24,7 +24,8 @@
     <div class="row">
         <!-- own visited on view profile then edit button -->
         <div *ngIf="user?._id == user1?._id" class="col-12 d-flex justify-content-center mt-3">
-            <button class="w-75 align-items-center btn-primary" data-bs-toggle="modal" href="#editmodal"> Edit
+            <button class="w-75 align-items-center btn-primary" (click)="onModalOpen()" data-bs-toggle="modal"
+                href="#editmodal"> Edit
                 Profile</button>
         </div>
         <!-- visited on other user profile and friend request not send -->
@@ -123,8 +124,8 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-center mt-2">
-                                <button class="btn btn-success mx-3" data-bs-dismiss="modal"
-                                    (click)="onUpdate()">Update</button>
+                                <button class="btn btn-success mx-3" data-bs-dismiss="modal" (click)="onUpdate()"
+                                    [disabled]="!isValid">Update</button>
                                 <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>

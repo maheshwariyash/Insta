@@ -35,7 +35,7 @@ export class PostComponent implements OnInit {
     private userservice: LoginService,
     private loader: LoaderService
   ) {
-    this.userservice.user.subscribe((user) => {
+    this.userservice.user.subscribe((user: any) => {
       this.loader.show();
       this.user = user;
     });
@@ -106,7 +106,7 @@ export class PostComponent implements OnInit {
       userId: this.user._id,
     });
 
-    const myBsModelListner = () => {
+    const onModelCloseListner = () => {
       console.log('modal open', id);
       console.log(this.commentdata);
 
@@ -118,9 +118,9 @@ export class PostComponent implements OnInit {
         return true;
       });
       this.socket.emit('userleave', { postId: pid });
-      myModal?.removeEventListener('hidden.bs.modal', myBsModelListner);
+      myModal?.removeEventListener('hidden.bs.modal', onModelCloseListner);
     };
-    myModal?.addEventListener('hidden.bs.modal', myBsModelListner);
+    myModal?.addEventListener('hidden.bs.modal', onModelCloseListner);
   }
 
   postComment(pid: any) {
