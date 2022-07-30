@@ -26,12 +26,12 @@ export class LoginComponent implements OnInit, DoCheck {
     private _snackBar: MatSnackBar,
     public authService: AuthService
   ) {
-    this.userservice.user.subscribe((user: any) => {
-      console.log('asdf', user);
-      if (user) {
-        this.router.navigate(['/home']);
-      }
-    });
+    // this.userservice.user.subscribe((user: any) => {
+    //   console.log('asdf', user);
+    //   if (user) {
+    //     // this.router.navigate(['/home']);
+    //   }
+    // });
     this.loginForm = this.fb.group({
       email: [
         '',

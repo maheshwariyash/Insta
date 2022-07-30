@@ -5,15 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DatePipe implements PipeTransform {
   transform(value: any): unknown {
-    // console.log(value);
     const date1: any = new Date(value);
     const date2: any = new Date();
 
     const diffTime: any = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    // console.log(diffTime + ' milliseconds');
-    // console.log(diffDays + ' days');
-    // console.log(today);
+
     var seconds: any = (diffTime / 1000) % 60;
     var minutes: any = (diffTime / (1000 * 60)) % 60;
     var hours: any = (diffTime / (1000 * 60 * 60)) % 24;
@@ -28,6 +25,11 @@ export class DatePipe implements PipeTransform {
       minutes = minutes.toString();
       minutes = '0' + minutes;
     }
+    if (seconds < 10) {
+      seconds = seconds.toString();
+      seconds = '0' + seconds;
+    }
+    console.log(seconds);
 
     if (hours == '00') {
       return minutes + ':' + Math.trunc(seconds) + ' mins ago';

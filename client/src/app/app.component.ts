@@ -18,14 +18,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private userservice: LoginService,
     private loader: LoaderService
   ) {
-    this.loadSub = this.loader.loadingObs().subscribe((showLoader) => {
-      this.isLoading = showLoader;
-    });
+    // this.loadSub = this.loader.loadingObs().subscribe((showLoader) => {
+    //   this.isLoading = showLoader;
+    // });
     this.userservice.getUser();
   }
 
   ngOnInit(): void {}
   ngOnDestroy(): void {
-    this.loadSub.unsubscribe();
+    // this.loadSub.unsubscribe();
   }
 }

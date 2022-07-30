@@ -36,12 +36,14 @@ export class RegisterComponent implements OnInit, DoCheck {
     private userservice: LoginService,
     public authService: AuthService
   ) {
-    this.userservice.user.subscribe((user: any) => {
-      console.log('asdf', user);
-      if (user) {
-        this.router.navigate(['/home']);
-      }
-    });
+    // this.userservice.user.subscribe((user: any) => {
+    //   console.log('asdf', user);
+    //   if (user) {
+    //     this.router.navigate(['/home']);
+    //   }
+    // });
+    // console.log('helllllllehhoo');
+
     this.newAccount = this.fb.group(
       {
         name: [

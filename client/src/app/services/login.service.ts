@@ -14,7 +14,7 @@ export class LoginService {
     private router: Router
   ) {}
   loadingUser: Observable<any>;
-  isLoading = true;
+  // isLoading = true;
   user: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   login(obj: any) {
@@ -137,10 +137,11 @@ export class LoginService {
       (data: any) => {
         console.log('qwertyu', data);
         if (data.user) {
-          this.isLoading = false;
+          // this.isLoading = false;
           this.user.next(data.user);
+          this.router.navigate(['/home']);
         } else {
-          this.isLoading = false;
+          // this.isLoading = false;
           this.user.next(null);
         }
       },

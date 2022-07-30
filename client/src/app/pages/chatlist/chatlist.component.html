@@ -4,6 +4,7 @@
             Recent Chats
         </h3>
     </div>
+    <div class="row w-100 m-0 p-0 mt-5" *ngIf="recentchats.length == 0"> Start chatting with your friends..</div>
     <div class="row w-100 m-0 p-0 mt-5">
         <div class="col-12  border px-1 py-1 m-0" *ngFor="let chat of recentchats | chatsort">
             <a class="d-flex flex-row align-items-center justify-content-between"

@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div *ngFor="let post of feedpost" class="col-6 m-0 p-0 border border-3">
+        <div *ngFor="let post of feedpost" class="col-6" style="padding: 0 1px; margin: 1px 0;">
             <a [routerLink]="['/home/spost',post.post[0]._id]">
                 <img [src]="url+post.post[0].image" alt="img" class="w-100">
             </a>

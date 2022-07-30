@@ -45,13 +45,13 @@
                 [routerLink]="['/home/chat/',user1?._id]">Message</button>
         </div>
     </div>
+    <hr>
     <div *ngIf="!((user?._id == user1?._id) || (friend[0]?.isfriend == true || user1?.accountType == 'public'))">
         <h3 class="mt-4 d-flex align-items-center justify-content-center text-danger"> Account Is Private!!</h3>
     </div>
     <div *ngIf=" (user?._id==user1?._id) || (friend[0]?.isfriend==true || user1?.accountType=='public' )"
-        class=" row mt-4">
-
-        <div *ngFor="let post of postarr" class="col-6 p-0 m-0 border border-dark mt-1">
+        class="row mt-4">
+        <div *ngFor="let post of postarr" class="col-6" style="padding: 0 1px; margin: 1px 0;">
             <a [routerLink]="['/home/spost',post?._id]">
                 <img [src]="url+post?.image" alt="img" class="w-100">
             </a>
