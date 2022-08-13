@@ -7,6 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const { default: mongoose } = require("mongoose");
 const fs = require("fs");
+const sendEmail = require("../utils/sendEmails");
 
 // multer initialization
 const fileStorageEngine = multer.diskStorage({
@@ -125,6 +126,80 @@ router.get("/logout", (req, res) => {
   res.send({
     message: "Loggedout Successfully",
   });
+});
+
+//forgot password
+router.post("/forgot-password", async (req, res, next) => {
+  const { email } = req.body;
+  console.log({ email });
+
+  try {
+    const user = await User.findOne({ email });
+    // console.log(user);
+
+    if (!user) {
+      //return next(new Error("Email could not be sent, no user", 404));
+      res.send({
+        message: "Invalid Email! Please enter Valid Email",
+        isValid: false,
+      });
+    }
+
+    const resetToken = user.getResetPasswordToken();
+    console.log(resetToken);
+    await user.save();
+
+    const resetUrl = `http://localhost:4200/reset-password/${resetToken}`;
+
+    const message = `
+      <h1>You have requested a password reset</h1>
+      <p>please go to this link to reset your password</p>
+      <a href = ${resetUrl} clicktracking=off>${resetUrl}</a>
+    `;
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "password reset request",
+        text: message,
+      });
+      // res.status(200).json(resetToken);
+      res.send({
+        message: "Please Check your mail id and Reset your password",
+        isValid: true,
+        data: { resetToken },
+      });
+    } catch (error) {
+      user.resetpasswordToken = undefined;
+      user.resetpasswordExpire = undefined;
+
+      await user.save();
+
+      // return next(new ErrorResponse("Email could not be sent! Please try again", 500));
+      res.send({ message: "Please check your connection", isValid: false });
+    }
+  } catch (error) {
+    user.resetpasswordToken = undefined;
+    user.resetpasswordExpire = undefined;
+
+    await user.save();
+
+    return next(new ErrorResponse("Email could not be sent !", 500));
+  }
+});
+
+// check user exist
+router.post("/checkuser", auth, async (req, res) => {
+  let query = req.body.userName;
+  let user = await User.find({ username: query });
+  res.send({ userExist: user[0]?.id ? true : false });
+});
+
+// check user exist
+router.post("/checkemail", async (req, res) => {
+  let query = req.body.email;
+  let user = await User.find({ email: query });
+  res.send({ emailExist: user[0]?.id ? true : false });
 });
 
 //  User Profile Updation

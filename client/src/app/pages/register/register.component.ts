@@ -36,14 +36,6 @@ export class RegisterComponent implements OnInit, DoCheck {
     private userservice: LoginService,
     public authService: AuthService
   ) {
-    // this.userservice.user.subscribe((user: any) => {
-    //   console.log('asdf', user);
-    //   if (user) {
-    //     this.router.navigate(['/home']);
-    //   }
-    // });
-    // console.log('helllllllehhoo');
-
     this.newAccount = this.fb.group(
       {
         name: [
@@ -88,6 +80,18 @@ export class RegisterComponent implements OnInit, DoCheck {
       },
       { validator: CustomValidators.mustMatch('password', 'confirmPassword') }
     );
+  }
+
+  checkEmail() {
+    this.userservice
+      .checkEmailExist(this.newAccount.controls['email'].value)
+      .subscribe((data: any) => {
+        if (data.emailExist) {
+          this.newAccount.controls['email'].setErrors({
+            emailExist: true,
+          });
+        }
+      });
   }
 
   ngOnInit(): void {}
@@ -139,6 +143,10 @@ export class RegisterComponent implements OnInit, DoCheck {
         if (this.newAccount.get('email')?.dirty) {
           //2nd Message
           this.emailTooltipMessage = 'Not a valid email.';
+        }
+        if (this.newAccount.get('email')?.hasError('emailExist')) {
+          //2nd Message
+          this.emailTooltipMessage = 'Email Already Exists.';
         }
       }
     }

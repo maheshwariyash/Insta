@@ -39,6 +39,7 @@ import { HiddenpostsComponent } from './pages/hiddenposts/hiddenposts.component'
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './component/loader/loader.component';
 import { DatedivPipe } from './pipes/datediv.pipe';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { DatedivPipe } from './pipes/datediv.pipe';
     HiddenpostsComponent,
     LoaderComponent,
     DatedivPipe,
+    ForgotPasswordComponent,
   ],
   imports: [
     CommonModule,

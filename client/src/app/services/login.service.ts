@@ -75,6 +75,28 @@ export class LoginService {
     });
   }
 
+  forgotPassword(data: any) {
+    return this.http.post('http://localhost:8000/user/forgot-password', {
+      email: data,
+    });
+  }
+
+  checkUserExist(data: any) {
+    return this.http.post(
+      'http://localhost:8000/user/checkuser',
+      { userName: data },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  checkEmailExist(data: any) {
+    return this.http.post('http://localhost:8000/user/checkemail', {
+      email: data,
+    });
+  }
+
   getUserById(id: any) {
     return this.http.get(`http://localhost:8000/user/${id}`, {
       withCredentials: true,

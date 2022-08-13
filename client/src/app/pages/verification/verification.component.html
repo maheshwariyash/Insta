@@ -12,10 +12,14 @@
                     </div>
                     <div class="col-9">
                         <input type="text" formControlName="username" class="form-control" placeholder="User Name"
-                            required
+                            required (keyup)="checkUsername()"
                             [ngClass]="{'invalid-input': isSubmitted && verificationForm.get('username')?.invalid}">
-                        <div *ngIf="isSubmitted && verificationForm.get('username')?.invalid" class="text-danger">
+                        <div *ngIf="isSubmitted && verificationForm.get('username')?.invalid && !verificationForm.get('username')?.hasError('userExist')"
+                            class="text-danger">
                             Enter User Name
+                        </div>
+                        <div *ngIf="verificationForm.get('username')?.hasError('userExist')" class="text-danger">
+                            Username allready Exist
                         </div>
                     </div>
                 </div>

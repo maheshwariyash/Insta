@@ -1,8 +1,9 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import { CustomValidators } from '../../providers/custom-validator';
 
 @Component({
   selector: 'app-verification',
@@ -27,6 +28,18 @@ export class VerificationComponent implements OnInit {
     accountType: ['public', Validators.required],
     profilePic: [''],
   });
+
+  checkUsername() {
+    this.userservice
+      .checkUserExist(this.verificationForm.controls['username'].value)
+      .subscribe((data: any) => {
+        if (data.userExist) {
+          this.verificationForm.controls['username'].setErrors({
+            userExist: true,
+          });
+        }
+      });
+  }
 
   onAccountTypeChange(e: any) {
     console.log(e.target.value);

@@ -5,6 +5,7 @@ import { VerificationGuard } from './guards/verification.guard';
 import { AddpostComponent } from './pages/addpost/addpost.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { FeedComponent } from './pages/feed/feed.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { FriendrequestComponent } from './pages/friendrequest/friendrequest.component';
 import { FriendslistComponent } from './pages/friendslist/friendslist.component';
 import { HiddenpostsComponent } from './pages/hiddenposts/hiddenposts.component';
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
   },
   {
     path: 'verification',
