@@ -14,6 +14,7 @@ import { LikedpostsComponent } from './pages/likedposts/likedposts.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PostComponent } from './pages/post/post.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { SinglepostComponent } from './pages/singlepost/singlepost.component';
 import { VerificationComponent } from './pages/verification/verification.component';
 import { ViewprofileComponent } from './pages/viewprofile/viewprofile.component';
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
+  },
+  {
+    path: 'reset-password/:resetToken',
+    component: ResetPasswordComponent,
   },
   {
     path: 'verification',

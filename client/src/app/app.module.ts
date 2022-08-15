@@ -40,6 +40,7 @@ import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './component/loader/loader.component';
 import { DatedivPipe } from './pipes/datediv.pipe';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
     LoaderComponent,
     DatedivPipe,
     ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     CommonModule,

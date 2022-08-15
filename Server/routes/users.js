@@ -138,17 +138,17 @@ router.post("/forgot-password", async (req, res, next) => {
     // console.log(user);
 
     if (!user) {
-      //return next(new Error("Email could not be sent, no user", 404));
       res.send({
         message: "Invalid Email! Please enter Valid Email",
         isValid: false,
       });
+      return next(new Error("Email could not be sent, no user", 404));
     }
 
     const resetToken = user.getResetPasswordToken();
     console.log(resetToken);
     await user.save();
-
+    console.log(user);
     const resetUrl = `http://localhost:4200/reset-password/${resetToken}`;
 
     const message = `
@@ -179,12 +179,52 @@ router.post("/forgot-password", async (req, res, next) => {
       res.send({ message: "Please check your connection", isValid: false });
     }
   } catch (error) {
-    user.resetpasswordToken = undefined;
-    user.resetpasswordExpire = undefined;
+    console.log(error);
+    // return next(new Error("Email could not be sent !", 500));
+  }
+});
 
-    await user.save();
+//reset password
 
-    return next(new ErrorResponse("Email could not be sent !", 500));
+router.post("/reset-password/:resetToken", async (req, res, next) => {
+  try {
+    console.log(req.params.resetToken);
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(req.params.resetToken)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      res.send({ message: "User not found", isValid: false });
+      return next(new Error("Invalid reset Token", 400));
+    } else {
+      if (req.body.password == req.body.confirmPassword) {
+        const hashedpassword = req.body.password;
+        req.body.password = await bcrypt.hash(hashedpassword, 8);
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+        const token = await user.generateAuthToken();
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+        });
+        res
+          .status(200)
+          .send({ message: "password changed successfully", isValid: true });
+      } else {
+        throw { message: "password didn't match", isRegistered: false };
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    // next(error);
   }
 });
 
