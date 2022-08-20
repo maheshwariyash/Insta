@@ -4,6 +4,7 @@ import { PostService } from 'src/app/services/post.service';
 import { io } from 'socket.io-client';
 import { LoginService } from 'src/app/services/login.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-post',
@@ -33,7 +34,8 @@ export class PostComponent implements OnInit {
     private route: ActivatedRoute,
     private postservice: PostService,
     private userservice: LoginService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private socketService: SocketService
   ) {
     this.userservice.user.subscribe((user: any) => {
       this.loader.show();
@@ -134,14 +136,20 @@ export class PostComponent implements OnInit {
     }
   }
 
-  like(id: any) {
+  like(id: any, image: any, uid: any) {
+    let obj = {
+      id,
+      image,
+      name: this.user.name,
+      username: this.user.username,
+    };
     console.log('like');
 
     var postlike: any = document.getElementById(id);
     var likecount: any = document.getElementsByClassName(id);
     var count = likecount[0].innerHTML;
 
-    // this.islike = !this.islike;
+    // to unlike a post
     if (postlike.getAttribute('fill') == 'red') {
       this.postservice.toUnlikePost(id);
       postlike?.setAttribute('fill', 'none');
@@ -149,8 +157,9 @@ export class PostComponent implements OnInit {
       count--;
       likecount[0].innerHTML = `${count}`;
 
-      // likecount[0].innerHTML = `${count++} Likes`;
+      // to like a post
     } else {
+      this.socketService.onPostLike(uid, obj);
       this.postservice.toLikePost(id);
       postlike?.setAttribute('fill', 'red');
       postlike?.setAttribute('stroke', 'red');

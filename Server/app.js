@@ -149,6 +149,49 @@ io.on("connection", (user) => {
   user.on("chatleave", async (data) => {
     user.leave(data.roomId);
   });
+
+  user.on("receiveFRND", async (data, id) => {
+    const user = await User.findById(id);
+    let obj = {
+      id: data._id,
+      name: data.name,
+      username: data.username,
+      type: "request",
+      image: data.profilePic,
+    };
+    user.notification.push(obj);
+    await user.save();
+    io.to(id).emit("receiveFR", data, obj);
+  });
+
+  user.on("confirmFRND", async (id, data) => {
+    const user = await User.findById(id);
+    console.log(data);
+    let obj = {
+      id: data._id,
+      name: data.name,
+      username: data.username,
+      type: "confirm",
+      image: data.profilePic,
+    };
+
+    user.notification.push(obj);
+    await user.save();
+    await User.updateOne(
+      { _id: data._id },
+      { $pull: { notification: { name: user.name, type: "request" } } }
+    );
+    io.to(id).emit("confirmFR", id, obj);
+  });
+
+  user.on("onLikedPost", async (id, obj) => {
+    let obj1 = obj;
+    obj1.type = "liked";
+    const user = await User.findById(id);
+    user.notification.push(obj1);
+    await user.save();
+    io.to(id).emit("likedPost", obj1);
+  });
 });
 
 server.listen(process.env.PORT | 8000, () => {

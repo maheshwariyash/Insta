@@ -65,6 +65,25 @@ const userSchema = new mongoose.Schema(
         ref: "posts",
       },
     ],
+    notification: [
+      {
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+        image: {
+          type: String,
+        },
+        username: {
+          type: String,
+        },
+        name: {
+          type: String,
+        },
+        type: {
+          type: String,
+        },
+      },
+    ],
     hiddenPosts: [
       {
         type: mongoose.Schema.Types.ObjectId,

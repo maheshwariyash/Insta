@@ -481,6 +481,11 @@ router.post("/search", auth, async (req, res) => {
   }
 });
 
+router.get("/notification", auth, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.send(user.notification);
+});
+
 // get User by Id
 router.get("/:id", auth, async (req, res) => {
   try {

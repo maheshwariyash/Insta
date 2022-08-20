@@ -1,11 +1,11 @@
 <div class="container">
     <h1>Friend Requests</h1>
-    <div *ngIf="user.length==0">
+    <div *ngIf="frList.length==0">
         No Requests Pending
     </div>
     <!-- first div for loop -->
-    <div *ngIf="user.length>0">
-        <div *ngFor="let user of user">
+    <div *ngIf="frList.length>0">
+        <div *ngFor="let user of frList">
             <div class="container border mt-2">
                 <div class="row">
                     <div class="col-12 d-flex flex-row align-items-center justify-content-between"
@@ -17,7 +17,8 @@
                             <div class="d-flex flex-column me-3">{{user.name}}<span>{{user.username}}</span></div>
                         </div>
                         <div>
-                            <button class="me-3 btn btn-success" (click)="onConfirm(user._id)">Confirm</button>
+                            <button class="me-3 btn btn-success"
+                                (click)="onConfirm(user._id,user.name)">Confirm</button>
                             <button class="btn btn-danger" (click)="onDelete(user._id)">Delete</button>
                         </div>
                     </div>
