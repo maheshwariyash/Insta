@@ -83,6 +83,13 @@ export class LoginService {
     });
   }
 
+  resetPassword(data: any, resetToken: any) {
+    return this.http.post(
+      `http://localhost:8000/user/reset-password/${resetToken}`,
+      data
+    );
+  }
+
   checkUserExist(data: any) {
     return this.http.post(
       'http://localhost:8000/user/checkuser',

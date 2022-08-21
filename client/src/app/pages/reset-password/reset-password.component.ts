@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from '../../providers/custom-validator';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -10,11 +11,13 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class ResetPasswordComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-
+  resetToken: any;
   constructor(
     private changePass: FormBuilder,
     private loginService: LoginService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.form = this.changePass.group(
       {
@@ -37,6 +40,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: any) => {
       console.log(params.resetToken);
+      this.resetToken = params.resetToken;
     });
   }
 
@@ -47,10 +51,19 @@ export class ResetPasswordComponent implements OnInit {
   submit() {
     const obj = this.form.value;
     // console.log(obj);
-    this.form.reset();
+    if (this.form.valid) {
+      this.loginService
+        .resetPassword(obj, this.resetToken)
+        .subscribe((data: any) => {
+          console.log(data);
 
-    // this.loginService.resetPassService(obj).subscribe((data) => {
-    //   console.log('done');
-    // });
+          this._snackBar.open(data.message, 'ok', {
+            duration: 3000,
+          });
+          if (data.isValid) {
+            this.router.navigateByUrl('/login');
+          }
+        });
+    }
   }
 }

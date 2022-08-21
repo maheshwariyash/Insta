@@ -192,6 +192,14 @@ io.on("connection", (user) => {
     await user.save();
     io.to(id).emit("likedPost", obj1);
   });
+
+  user.on("onUnlikedPost", async (id, obj) => {
+    await User.updateOne(
+      { _id: id },
+      { $pull: { notification: { name: obj.name, type: "liked" } } }
+    );
+    io.to(id).emit("unlikedPost", obj);
+  });
 });
 
 server.listen(process.env.PORT | 8000, () => {

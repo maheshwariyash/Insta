@@ -84,6 +84,19 @@ export class SocketService {
         this.userservice.notifications.next(notificationData1);
         console.log(notificationData);
       });
+
+      this.socket.on('unlikedPost', async (notificationData: any) => {
+        let notificationData1 = this.userservice.notifications.getValue();
+        notificationData1 = notificationData1.filter((data: any) => {
+          if (data.id == notificationData.id && data.type == 'liked') {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        this.userservice.notifications.next(notificationData1);
+        console.log(notificationData);
+      });
     });
   }
 
@@ -158,5 +171,9 @@ export class SocketService {
 
   onPostLike(id: any, obj: any) {
     this.socket.emit('onLikedPost', id, obj);
+  }
+
+  onPostUnlike(id: any, obj: any) {
+    this.socket.emit('onUnlikedPost', id, obj);
   }
 }

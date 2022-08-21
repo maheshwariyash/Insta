@@ -34,7 +34,7 @@ export class FriendrequestComponent implements OnInit {
       this.userservice.user.next(user);
       let data = this.userservice.notifications.getValue();
       data = data.filter((item: any) => {
-        if (item.name == name && item.type == 'request') {
+        if (item.id == id && item.type == 'request') {
           return false;
         } else {
           return true;

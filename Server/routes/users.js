@@ -8,6 +8,7 @@ const path = require("path");
 const { default: mongoose } = require("mongoose");
 const fs = require("fs");
 const sendEmail = require("../utils/sendEmails");
+const crypto = require("crypto");
 
 // multer initialization
 const fileStorageEngine = multer.diskStorage({
@@ -180,6 +181,7 @@ router.post("/forgot-password", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
+    res.send({ message: "Internal Error!!", isValid: false });
     // return next(new Error("Email could not be sent !", 500));
   }
 });
@@ -200,7 +202,7 @@ router.post("/reset-password/:resetToken", async (req, res, next) => {
     });
 
     if (!user) {
-      res.send({ message: "User not found", isValid: false });
+      res.send({ message: "User not found, Please try again", isValid: false });
       return next(new Error("Invalid reset Token", 400));
     } else {
       if (req.body.password == req.body.confirmPassword) {
@@ -211,18 +213,21 @@ router.post("/reset-password/:resetToken", async (req, res, next) => {
         user.resetPasswordExpire = undefined;
         await user.save();
         const token = await user.generateAuthToken();
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: true,
+        // res.cookie("token", token, {
+        //   httpOnly: true,
+        //   secure: true,
+        // });
+        res.status(200).send({
+          message: "password changed successfully",
+          isValid: true,
+          user,
         });
-        res
-          .status(200)
-          .send({ message: "password changed successfully", isValid: true });
       } else {
-        throw { message: "password didn't match", isRegistered: false };
+        res.send({ message: "password didn't match", isValid: false });
       }
     }
   } catch (error) {
+    res.send({ message: "Internal Error!!", isValid: false });
     console.log(error);
     // next(error);
   }

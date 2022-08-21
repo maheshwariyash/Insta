@@ -151,6 +151,7 @@ export class PostComponent implements OnInit {
 
     // to unlike a post
     if (postlike.getAttribute('fill') == 'red') {
+      this.socketService.onPostUnlike(uid, obj);
       this.postservice.toUnlikePost(id);
       postlike?.setAttribute('fill', 'none');
       postlike?.setAttribute('stroke', 'black');
