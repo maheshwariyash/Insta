@@ -26,12 +26,72 @@
                         class="fs-4 text-white">
                     </fa-icon>
                 </li> -->
-                <li class="nav-item me-5 d-flex align-items-center">
-                    <button style="background: none; border: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 448 512" width="30" height="45" fill="white">
+                <li class="nav-item dropdown me-5 d-flex align-items-center" ngbDropdown>
+                    <!-- <button style="background: none; border: none;"> -->
+                    <a class="nav-link text-light" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        ngbDropdownToggle aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="45"
+                            fill="white">
                             <path
                                 d="M439.39 362.29c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71zM67.53 368c21.22-27.97 44.42-74.33 44.53-159.42 0-.2-.06-.38-.06-.58 0-61.86 50.14-112 112-112s112 50.14 112 112c0 .2-.06.38-.06.58.11 85.1 23.31 131.46 44.53 159.42H67.53zM224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64z" />
-                        </svg></button>
+                        </svg>
+                    </a>
+                    <!-- </button> -->
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li class="head text-light bg-dark">
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-12 m-2">
+                                    <span>Notifications ({{notification.length}})</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li *ngFor="let item of notification">
+                            <a *ngIf="item.type == 'liked'" [routerLink]="['/home/spost/',item.id]" ngbDropdownToggle>
+                                <div class="d-flex flex-row align-items-center justify-content-between m-1">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="border rounded-circle me-1" style="width: 60px; height: 60px;">
+                                            <img class="w-100 h-100 rounded-circle" [src]="url+item.image"
+                                                alt="Profile Pic">
+                                        </div>
+                                        <div class="d-flex flex-row me-3">{{item.name}}
+                                            <span *ngIf="item.type == 'request'"> &nbsp;send you a friend
+                                                request</span>
+                                            <span *ngIf="item.type == 'confirm'"> &nbsp;has accepted your friend
+                                                request</span>
+                                            <span *ngIf="item.type == 'liked'"> &nbsp;liked your photo</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div>
+                                        <p class="text-muted">{{item.id}}</p>
+                                    </div> -->
+                                </div>
+                            </a>
+                            <a *ngIf="item.type != 'liked'" [routerLink]="['/home/viewprofile/',item.id]"
+                                ngbDropdownToggle>
+                                <div class="d-flex flex-row align-items-center justify-content-between m-1">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="border rounded-circle me-1" style="width: 60px; height: 60px;">
+                                            <img class="w-100 h-100 rounded-circle" [src]="url+item.image"
+                                                alt="Profile Pic">
+                                        </div>
+                                        <div class="d-flex flex-row me-3">{{item.name}}
+                                            <span *ngIf="item.type == 'request'"> &nbsp;send you a friend
+                                                request</span>
+                                            <span *ngIf="item.type == 'confirm'"> &nbsp;has accepted your friend
+                                                request</span>
+                                            <span *ngIf="item.type == 'liked'"> &nbsp;liked your photo</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div>
+                                        <p class="text-muted">{{item.id}}</p>
+                                    </div> -->
+                                </div>
+                            </a>
+                        </li>
+                        <li class="footer bg-dark text-center">
+                            <a href="" class="text-light">View All</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item fs-5 fw-bolder">
                     <a class="nav-link text-danger" routerLink="/login" (click)="onLogout()">Logout</a>

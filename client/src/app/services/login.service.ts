@@ -16,6 +16,8 @@ export class LoginService {
   loadingUser: Observable<any>;
   // isLoading = true;
   user: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  friendReqList: BehaviorSubject<any> = new BehaviorSubject([]);
+  notifications: BehaviorSubject<any> = new BehaviorSubject([]);
 
   login(obj: any) {
     this.http
@@ -81,6 +83,13 @@ export class LoginService {
     });
   }
 
+  resetPassword(data: any, resetToken: any) {
+    return this.http.post(
+      `http://localhost:8000/user/reset-password/${resetToken}`,
+      data
+    );
+  }
+
   checkUserExist(data: any) {
     return this.http.post(
       'http://localhost:8000/user/checkuser',
@@ -116,9 +125,13 @@ export class LoginService {
   }
 
   getFriendReq() {
-    return this.http.get(`http://localhost:8000/user/friendreq`, {
-      withCredentials: true,
-    });
+    this.http
+      .get(`http://localhost:8000/user/friendreq`, {
+        withCredentials: true,
+      })
+      .subscribe((data: any) => {
+        this.friendReqList.next(data[0].user);
+      });
   }
 
   getFriendList(id: any) {
@@ -149,6 +162,18 @@ export class LoginService {
     return this.http.post('http://localhost:8000/user/search', obj, {
       withCredentials: true,
     });
+  }
+
+  getNotification() {
+    this.http
+      .get('http://localhost:8000/user/notification', {
+        withCredentials: true,
+      })
+      .subscribe((data) => {
+        console.log(data);
+
+        this.notifications.next(data);
+      });
   }
 
   getUser() {

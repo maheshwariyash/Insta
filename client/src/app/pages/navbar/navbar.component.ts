@@ -15,6 +15,8 @@ export class NavbarComponent implements OnInit {
   search: String;
   faMicrophone = faMicrophone;
   faMicrophoneSlash = faMicrophoneSlash;
+  url = 'http://localhost:8000/';
+  notification: any = [];
 
   // isRunning = false;
 
@@ -26,6 +28,9 @@ export class NavbarComponent implements OnInit {
   ) {
     this.userservice.user.subscribe((user) => {
       this.user = user;
+    });
+    this.userservice.notifications.subscribe((data) => {
+      this.notification = data;
     });
   }
 

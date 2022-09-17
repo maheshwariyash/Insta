@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
 import { PostService } from 'src/app/services/post.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -10,9 +11,11 @@ import { SocketService } from 'src/app/services/socket.service';
 export class HomeComponent implements OnInit {
   constructor(
     private postservice: PostService,
-    private socketservice: SocketService
+    private socketservice: SocketService,
+    private userservice: LoginService
   ) {
     this.postservice.getRecentChats();
+    this.userservice.getNotification();
   }
 
   ngOnInit(): void {}

@@ -9,7 +9,7 @@ import { PostService } from './post.service';
   providedIn: 'root',
 })
 export class SocketService {
-  socket!: io.Socket<DefaultEventsMap, DefaultEventsMap>;
+  socket!: io.Socket;
   user: any = {};
   user1: any;
   data: BehaviorSubject<any> = new BehaviorSubject(undefined);
@@ -50,6 +50,52 @@ export class SocketService {
 
             this.onReceivingMessage(this.data1);
           });
+      });
+      this.socket.on('receiveFR', async (data: any, notificationData) => {
+        console.log('poiuy');
+        console.log(data);
+        let data1 = this.userservice.friendReqList.getValue();
+        console.log(data1);
+        data1.push(data);
+        this.userservice.friendReqList.next(data1);
+
+        let notificationData1 = this.userservice.notifications.getValue();
+        notificationData1.push(notificationData);
+        this.userservice.notifications.next(notificationData1);
+        console.log(notificationData);
+
+        console.log(this.userservice.notifications.getValue());
+      });
+
+      this.socket.on('confirmFR', async (id: any, notificationData: any) => {
+        console.log(id);
+        this.userservice.getUserById(id).subscribe((data: any) => {
+          this.userservice.user.next(data);
+        });
+        let notificationData1 = this.userservice.notifications.getValue();
+        notificationData1.push(notificationData);
+        this.userservice.notifications.next(notificationData1);
+        console.log(notificationData);
+      });
+
+      this.socket.on('likedPost', async (notificationData: any) => {
+        let notificationData1 = this.userservice.notifications.getValue();
+        notificationData1.push(notificationData);
+        this.userservice.notifications.next(notificationData1);
+        console.log(notificationData);
+      });
+
+      this.socket.on('unlikedPost', async (notificationData: any) => {
+        let notificationData1 = this.userservice.notifications.getValue();
+        notificationData1 = notificationData1.filter((data: any) => {
+          if (data.id == notificationData.id && data.type == 'liked') {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        this.userservice.notifications.next(notificationData1);
+        console.log(notificationData);
       });
     });
   }
@@ -111,5 +157,23 @@ export class SocketService {
     console.log(roomId);
 
     this.socket.emit('chatleave', roomId);
+  }
+
+  onReceivingFR(data: any, id: any) {
+    console.log(data);
+
+    this.socket.emit('receiveFRND', data, id);
+  }
+
+  onConfirmFR(id: any, data: any) {
+    this.socket.emit('confirmFRND', id, data);
+  }
+
+  onPostLike(id: any, obj: any) {
+    this.socket.emit('onLikedPost', id, obj);
+  }
+
+  onPostUnlike(id: any, obj: any) {
+    this.socket.emit('onUnlikedPost', id, obj);
   }
 }

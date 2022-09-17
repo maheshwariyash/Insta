@@ -34,7 +34,7 @@
 const sgMail = require("@sendgrid/mail");
 
 const sendEmail = (options) => {
-  const email = 'memestagram7@gmail.com'
+  const email = "memestagram7@gmail.com";
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   console.log(process.env.SENDGRID_API_KEY);
   console.log(options);

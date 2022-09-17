@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
 import { LoginService } from 'src/app/services/login.service';
 import { PostService } from 'src/app/services/post.service';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-viewprofile',
@@ -31,7 +32,8 @@ export class ViewprofileComponent implements OnInit, DoCheck {
     private _snackBar: MatSnackBar,
     private postservice: PostService,
     private route: ActivatedRoute,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private socketService: SocketService
   ) {
     this.route.params.subscribe((param: any) => {
       this.loader.show();
@@ -112,6 +114,7 @@ export class ViewprofileComponent implements OnInit, DoCheck {
     this.userservice.addfriend(this.id).subscribe((data: any): any => {
       console.log('Add friend', data.user1);
 
+      this.socketService.onReceivingFR(this.user, this.id);
       // this.userservice.user.next(data.user);
       // this.user = data.user;
       this.user1 = data.user1;
